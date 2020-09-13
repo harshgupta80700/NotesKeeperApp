@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:notes_app/Services/notes_service.dart';
 import 'package:notes_app/models/note_for_listing.dart';
 import 'package:notes_app/views/note_delete.dart';
 import 'package:notes_app/views/note_modify.dart';
@@ -12,12 +14,17 @@ class NoteList extends StatefulWidget {
 
 class _NoteListState extends State<NoteList> {
 
+  NotesServices get services => GetIt.instance<NotesServices>();
+
+  List<NoteForListing> notes = [];
+
   String formatDateTime (DateTime dateTime){
     return '${dateTime.day}/${dateTime.month}/${dateTime.year}';
   }
 
   @override
   void initState() {
+    notes = services.getNotelist();
     super.initState();
     print("notes page called");
   }
