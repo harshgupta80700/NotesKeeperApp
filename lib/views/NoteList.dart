@@ -2,26 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:notes_app/models/note_for_listing.dart';
 
 
-final notes = [
-  new NoteForListing(
-    noteId: "1",
-    noteTitle: "Note 1",
-    createdDateTime: DateTime.now(),
-    lastEditedDateTime: DateTime.now()
-  ),
-  new NoteForListing(
-      noteId: "2",
-      noteTitle: "Note 2",
-      createdDateTime: DateTime.now(),
-      lastEditedDateTime: DateTime.now()
-  ),
-  new NoteForListing(
-      noteId: "3",
-      noteTitle: "Note 3",
-      createdDateTime: DateTime.now(),
-      lastEditedDateTime: DateTime.now()
-  )
-];
 
 class NoteList extends StatefulWidget {
   @override
@@ -29,6 +9,27 @@ class NoteList extends StatefulWidget {
 }
 
 class _NoteListState extends State<NoteList> {
+
+  final notes = [
+    new NoteForListing(
+        noteId: "1",
+        noteTitle: "Note 1",
+        createdDateTime: DateTime.now(),
+        lastEditedDateTime: DateTime.now()
+    ),
+    new NoteForListing(
+        noteId: "2",
+        noteTitle: "Note 2",
+        createdDateTime: DateTime.now(),
+        lastEditedDateTime: DateTime.now()
+    ),
+    new NoteForListing(
+        noteId: "3",
+        noteTitle: "Note 3",
+        createdDateTime: DateTime.now(),
+        lastEditedDateTime: DateTime.now()
+    )
+  ];
 
   String formatDateTime (DateTime dateTime){
     return '${dateTime.day}/${dateTime.month}/${dateTime.year}';
@@ -49,7 +50,7 @@ class _NoteListState extends State<NoteList> {
       ),
       floatingActionButton: FloatingActionButton(
           onPressed: (){
-
+            Navigator.pushNamed(context, '/NoteModify');
           },
           child: Icon(Icons.add),
       ),
