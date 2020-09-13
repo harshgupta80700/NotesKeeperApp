@@ -1,29 +1,42 @@
+import 'dart:convert';
+
+import 'package:notes_app/models/api_response.dart';
 import 'package:notes_app/models/note_for_listing.dart';
+import 'package:http/http.dart' as http;
 
 class NotesServices{
 
-  List<NoteForListing> getNotelist(){
+  static const url = 'http://api.notes.programmingaddict.com';
+  static const headers = {
+    'apiKey': '7dcad8fe-bb7a-41d7-8c47-84c1d2bcd68b'
+  };
 
-    return [
-      new NoteForListing(
-          noteId: "1",
-          noteTitle: "Note 1",
-          createdDateTime: DateTime.now(),
-          lastEditedDateTime: DateTime.now()
-      ),
-      new NoteForListing(
-          noteId: "2",
-          noteTitle: "Note 2",
-          createdDateTime: DateTime.now(),
-          lastEditedDateTime: DateTime.now()
-      ),
-      new NoteForListing(
-          noteId: "3",
-          noteTitle: "Note 3",
-          createdDateTime: DateTime.now(),
-          lastEditedDateTime: DateTime.now()
-      )
-    ];
+  Future<APIResponse<List<NoteForListing>>> getNotelist(){
+    return http.get(url + '/notes',headers: headers).then((data){
+      if(data.statusCode == 200){
+        final jsonData = json.decode(data.body);
+        final notes = <NoteForListing>[];
+        for (var item in jsonData){
+          final note = NoteForListing(
+            noteId: item['noteID'],
+            noteTitle: item['noteTitle'],
+            createdDateTime: DateTime.parse(item['createDateTime']),
+            lastEditedDateTime: item['latestEditDateTime'] != null ? DateTime.parse(item['latestEditDateTime']):null
+          );
+          notes.add(note);
+        }
+        return APIResponse<List<NoteForListing>>(
+          data: notes
+        );
+      }
+      return APIResponse<List<NoteForListing>>(
+        error: true,
+        errorMessage: "An error occured"
+      );
+    }).catchError((_)=>APIResponse<List<NoteForListing>>(
+      error: true,
+      errorMessage: "An error has occured"
+    ));
 
   }
 
