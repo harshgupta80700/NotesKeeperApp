@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 // import 'package:notes_app/routes/routes.dart';
-import 'package:notes_app/routes/routesgenerator.dart';
+// import 'package:notes_app/routes/routesgenerator.dart';
 import 'package:notes_app/views/NoteList.dart';
 
 void main (){
