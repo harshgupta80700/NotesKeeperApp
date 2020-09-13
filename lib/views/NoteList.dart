@@ -21,8 +21,6 @@ class _NoteListState extends State<NoteList> {
 
   bool isLoading = false;
 
-  List<NoteForListing> notes = [];
-
   String formatDateTime (DateTime dateTime){
     return '${dateTime.day}/${dateTime.month}/${dateTime.year}';
   }
@@ -32,12 +30,18 @@ class _NoteListState extends State<NoteList> {
       isLoading = true;
     });
 
-    services.getNotelist().then((value){
-      _apiResponse = value;
-      setState(() {
-        isLoading =  false;
-      });
+    _apiResponse = await services.getNotelist();
+
+    setState(() {
+      isLoading = false;
     });
+
+    // services.getNotelist().then((value){
+    //   _apiResponse = value;
+    //   setState(() {
+    //     isLoading =  false;
+    //   });
+    // });
 
   }
 
@@ -78,7 +82,7 @@ class _NoteListState extends State<NoteList> {
           return ListView.separated(
               itemBuilder: (_,index){
                 return Dismissible(
-                  key: ValueKey(notes[index].noteId),
+                  key: ValueKey(_apiResponse.data[index].noteId),
                   direction: DismissDirection.startToEnd,
                   onDismissed: (direction){
 
@@ -100,17 +104,17 @@ class _NoteListState extends State<NoteList> {
                     ),
                   ),
                   child: ListTile(
-                    title: Text(notes[index].noteTitle,style: TextStyle(color: Theme.of(context).primaryColor),),
-                    subtitle: Text("Last edited on ${formatDateTime(notes[index].lastEditedDateTime)}"),
+                    title: Text(_apiResponse.data[index].noteTitle,style: TextStyle(color: Theme.of(context).primaryColor),),
+                    subtitle: Text("Last edited on ${formatDateTime(_apiResponse.data[index].lastEditedDateTime ?? _apiResponse.data[index].createdDateTime)}"),
                     onTap: (){
                       // Navigator.pushNamed(context, '/NoteModify',arguments: notes[index].noteId);
-                      Navigator.push(context,MaterialPageRoute(builder: (_)=>NoteModify(noteId: notes[index].noteId,)));
+                      Navigator.push(context,MaterialPageRoute(builder: (_)=>NoteModify(noteId: _apiResponse.data[index].noteId,)));
                     },
                   ),
                 );
               },
               separatorBuilder: (_,__) => Divider(height: 0,indent: 20,endIndent: 20,color: Theme.of(context).primaryColor,),
-              itemCount: notes.length
+              itemCount: _apiResponse.data.length
           );
         },
       )

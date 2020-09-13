@@ -25,6 +25,7 @@ class NotesServices{
           );
           notes.add(note);
         }
+        print(notes.length);
         return APIResponse<List<NoteForListing>>(
           data: notes
         );
