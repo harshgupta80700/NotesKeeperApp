@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:notes_app/models/note_for_listing.dart';
+import 'package:notes_app/views/note_modify.dart';
 
 
 
@@ -50,7 +51,8 @@ class _NoteListState extends State<NoteList> {
       ),
       floatingActionButton: FloatingActionButton(
           onPressed: (){
-            Navigator.pushNamed(context, '/NoteModify');
+            // Navigator.pushNamed(context, '/NoteModify');
+            Navigator.push(context,MaterialPageRoute(builder: (_)=>NoteModify()));
           },
           child: Icon(Icons.add),
       ),
@@ -60,6 +62,10 @@ class _NoteListState extends State<NoteList> {
             return ListTile(
               title: Text(notes[index].noteTitle,style: TextStyle(color: Theme.of(context).primaryColor),),
               subtitle: Text("Last edited on ${formatDateTime(notes[index].lastEditedDateTime)}"),
+              onTap: (){
+                // Navigator.pushNamed(context, '/NoteModify',arguments: notes[index].noteId);
+                Navigator.push(context,MaterialPageRoute(builder: (_)=>NoteModify(noteId: notes[index].noteId,)));
+              },
             );
           },
           separatorBuilder: (_,__) => Divider(height: 0,indent: 20,endIndent: 20,color: Theme.of(context).primaryColor,),

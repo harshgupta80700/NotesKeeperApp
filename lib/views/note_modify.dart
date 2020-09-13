@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 
 class NoteModify extends StatelessWidget {
+
+  final String noteId;
+  NoteModify({this.noteId});
+
+  bool get isEditing => noteId!=null;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Modify Note"),
+        title: Text(isEditing?"Modify Note":"Add Note"),
         centerTitle: true,
       ),
 
@@ -28,12 +34,20 @@ class NoteModify extends StatelessWidget {
               ),
             ),
             SizedBox(height: 35,),
-            RaisedButton(
-              onPressed: (){
-                Navigator.pop(context);
-              },
-              color: Theme.of(context).primaryColor,
-              child: Text("Submit"),
+            SizedBox(
+              width: double.infinity,
+              child: RaisedButton(
+                onPressed: (){
+                  if(isEditing){
+                    //update note in API
+                  }else{
+                    //create note in API
+                  }
+                  Navigator.pop(context);
+                },
+                color: Theme.of(context).primaryColor,
+                child: Text("Submit",style: TextStyle(color: Colors.white),),
+              ),
             )
           ],
         ),
