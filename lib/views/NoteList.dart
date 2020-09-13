@@ -30,18 +30,18 @@ class _NoteListState extends State<NoteList> {
       isLoading = true;
     });
 
-    _apiResponse = await services.getNotelist();
-
-    setState(() {
-      isLoading = false;
-    });
-
-    // services.getNotelist().then((value){
-    //   _apiResponse = value;
-    //   setState(() {
-    //     isLoading =  false;
-    //   });
+    // _apiResponse = await services.getNotelist();
+    //
+    // setState(() {
+    //   isLoading = false;
     // });
+
+    services.getNotelist().then((value){
+      _apiResponse = value;
+      setState(() {
+        isLoading =  false;
+      });
+    });
 
   }
 
