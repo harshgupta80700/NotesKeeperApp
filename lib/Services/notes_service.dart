@@ -27,10 +27,7 @@ class NotesServices{
           data: notes
         );
       }
-      return APIResponse<List<NoteForListing>>(
-        error: true,
-        errorMessage: "An error occured"
-      );
+      throw Error();
     }).catchError((_)=>APIResponse<List<NoteForListing>>(
       error: true,
       errorMessage: "An error has occured"
@@ -48,10 +45,7 @@ class NotesServices{
             data: note
         );
       }
-      return APIResponse<Note>(
-          error: true,
-          errorMessage: "An error occured"
-      );
+      throw Error();
     }).catchError((_)=>APIResponse<Note>(
         error: true,
         errorMessage: "An error has occured"
@@ -60,7 +54,7 @@ class NotesServices{
   }
 
 
-  Future<APIResponse<bool>> createNote (NoteInsert noteInsert){
+  Future<APIResponse<bool>> createNote (NoteManipualtion noteInsert){
     return http.post(url + '/notes',headers: headers,body: jsonEncode(noteInsert.toJson())).then((data){
       if(data.statusCode == 201){
         // final jsonData = json.decode(data.body);
@@ -69,15 +63,32 @@ class NotesServices{
             data: true
         );
       }
-      return APIResponse<bool>(
-          error: true,
-          errorMessage: "An error occured"
-      );
+      throw Error();
     }).catchError((_)=>APIResponse<bool>(
         error: true,
         errorMessage: "An error has occured"
     ));
 
   }
+
+
+  Future<APIResponse<bool>> updateNote (String noteId , NoteManipualtion noteInsert){
+    return http.put(url + '/notes/' + noteId,headers: headers,body: jsonEncode(noteInsert.toJson())).then((data){
+      print(data.statusCode);
+      if(data.statusCode == 204){
+        // final jsonData = json.decode(data.body);
+        // final note = Note.fromjson(jsonData);
+        return APIResponse<bool>(
+            data: true
+        );
+      }
+      throw Error();
+    }).catchError((_)=>APIResponse<bool>(
+        error: true,
+        errorMessage: "An error has occured"
+    ));
+
+  }
+
 
 }

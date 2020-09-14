@@ -88,12 +88,47 @@ class _NoteModifyState extends State<NoteModify> {
                     onPressed: () async {
                       if(isEditing){
                         //update note in API
+
+                        setState(() {
+                          isLoading = true;
+                        });
+                        final note = NoteManipualtion(
+                            noteTitle: _titleController.text,
+                            noteContent: _contentController.text
+                        );
+                        final result = await services.updateNote(widget.noteId , note);
+                        print(result.data);
+                        print(result.errorMessage);
+                        print(result.error);
+                        final title = result.error ? result.errorMessage : "Note Updated";
+                        print(title);
+                        await showDialog(
+                            context: context,
+                            builder: (_) => AlertDialog(
+                              title: Text(title,style: TextStyle(color: Colors.black),),
+                              actions: [
+                                FlatButton(
+                                    onPressed: (){
+                                      print("hello");
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text("OK")
+                                ),
+                              ],
+                            )
+                        );
+                        setState(() {
+                          isLoading = false;
+                        });
+
+
+
                       }else{
                         //create note in API
                         setState(() {
                           isLoading = true;
                         });
-                        final note = NoteInsert(
+                        final note = NoteManipualtion(
                             noteTitle: _titleController.text,
                             noteContent: _contentController.text
                         );
