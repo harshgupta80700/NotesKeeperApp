@@ -90,7 +90,7 @@ class _NoteListState extends State<NoteList> {
                   confirmDismiss: (direction) async {
                     final result = await showDialog(
                         context: context,
-                        builder: (_)=>NoteDelete()
+                        builder: (_)=>NoteDelete(title: "Warning!!",content: "Are you sure you want to delete this note",buttonOne: "Cancel",buttonTwo: "Delete",)
                     );
                     print(result);
                     return result;

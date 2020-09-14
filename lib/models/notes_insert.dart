@@ -12,7 +12,7 @@ class NoteInsert{
   Map<String,dynamic> toJson(){
     return {
       "noteTitle": noteTitle,
-      "noteContent": noteContent 
+      "noteContent": noteContent
     };
   }
 

@@ -1,23 +1,35 @@
 import 'package:flutter/material.dart';
 
 class NoteDelete extends StatelessWidget {
+
+  String title;
+  String content;
+  String buttonOne;
+  String buttonTwo;
+  NoteDelete({
+    this.content = " ",
+    this.title = " ",
+    this.buttonOne = " " ,
+    this.buttonTwo = " ",
+  });
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text("Warning!!",style: TextStyle(color: Colors.red),),
-      content: Text("Are you sure you want to delete this note"),
+      title: Text(title,style: TextStyle(color: Colors.red),),
+      content: Text(content),
       actions: [
         FlatButton(
             onPressed: (){
               Navigator.of(context).pop(false);
             },
-            child: Text("Cancel")
+            child: Text(buttonOne)
         ),
         FlatButton(
             onPressed: (){
               Navigator.of(context).pop(true);
             },
-            child: Text("Delete")
+            child: Text(buttonTwo)
         ),
       ],
     );

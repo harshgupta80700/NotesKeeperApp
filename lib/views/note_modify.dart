@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:notes_app/Services/notes_service.dart';
 import 'package:notes_app/models/note_by_id.dart';
+import 'package:notes_app/models/notes_insert.dart';
+
+import 'note_delete.dart';
 
 class NoteModify extends StatefulWidget {
 
@@ -82,11 +85,42 @@ class _NoteModifyState extends State<NoteModify> {
                 SizedBox(
                   width: double.infinity,
                   child: RaisedButton(
-                    onPressed: (){
+                    onPressed: () async {
                       if(isEditing){
                         //update note in API
                       }else{
                         //create note in API
+                        setState(() {
+                          isLoading = true;
+                        });
+                        final note = NoteInsert(
+                            noteTitle: _titleController.text,
+                            noteContent: _contentController.text
+                        );
+                        final result = await services.createNote(note);
+                        print(result.data);
+                        print(result.errorMessage);
+                        print(result.error);
+                        final title = result.error ? result.errorMessage : "Note created";
+                        print(title);
+                        showDialog(
+                            context: context,
+                            builder: (_) => AlertDialog(
+                              title: Text(title,style: TextStyle(color: Colors.red),),
+                              actions: [
+                                FlatButton(
+                                    onPressed: (){
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text("OK")
+                                ),
+                              ],
+                            )
+                        );
+                        setState(() {
+                          isLoading = false;
+                        });
+
                       }
                       Navigator.pop(context);
                     },
