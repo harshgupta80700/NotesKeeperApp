@@ -103,13 +103,14 @@ class _NoteModifyState extends State<NoteModify> {
                         print(result.error);
                         final title = result.error ? result.errorMessage : "Note created";
                         print(title);
-                        showDialog(
+                        await showDialog(
                             context: context,
                             builder: (_) => AlertDialog(
-                              title: Text(title,style: TextStyle(color: Colors.red),),
+                              title: Text(title,style: TextStyle(color: Colors.black),),
                               actions: [
                                 FlatButton(
                                     onPressed: (){
+                                      print("hello");
                                       Navigator.of(context).pop();
                                     },
                                     child: Text("OK")
