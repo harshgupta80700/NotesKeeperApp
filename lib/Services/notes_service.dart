@@ -4,6 +4,7 @@ import 'package:notes_app/models/api_response.dart';
 import 'package:notes_app/models/note_by_id.dart';
 import 'package:notes_app/models/note_for_listing.dart';
 import 'package:http/http.dart' as http;
+import 'package:notes_app/models/notes_insert.dart';
 
 class NotesServices{
 
@@ -44,6 +45,27 @@ class NotesServices{
           final note = Note.fromjson(jsonData);
         return APIResponse<Note>(
             data: note
+        );
+      }
+      return APIResponse<Note>(
+          error: true,
+          errorMessage: "An error occured"
+      );
+    }).catchError((_)=>APIResponse<Note>(
+        error: true,
+        errorMessage: "An error has occured"
+    ));
+
+  }
+
+
+  Future<APIResponse<bool>> createNote (NoteInsert noteInsert){
+    return http.post(url + '/notes/',headers: headers,body: noteInsert.toJson()).then((data){
+      if(data.statusCode == 201){
+        // final jsonData = json.decode(data.body);
+        // final note = Note.fromjson(jsonData);
+        return APIResponse<Note>(
+            data: true
         );
       }
       return APIResponse<Note>(
