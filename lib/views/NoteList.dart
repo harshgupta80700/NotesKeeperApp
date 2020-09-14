@@ -95,6 +95,32 @@ class _NoteListState extends State<NoteList> {
                         builder: (_)=>NoteDelete(title: "Warning!!",content: "Are you sure you want to delete this note",buttonOne: "Cancel",buttonTwo: "Delete",)
                     );
                     print(result);
+                    if(result){
+                      final deleteResult = await services.deleteNote(_apiResponse.data[index].noteId);
+                      var message;
+                      if(deleteResult != null && deleteResult.data == true){
+                        message = "The note was deleted successfully";
+                      }else{
+                        message =  deleteResult?.errorMessage ?? "An error occured";
+                      }
+                      // Scaffold.of(context).showSnackBar(SnackBar(content: Text(message),duration: Duration(milliseconds: 1000),));
+                      showDialog(
+                          context: context,
+                          builder: (_) => AlertDialog(
+                            title: Text(message,style: TextStyle(color: Colors.black),),
+                            actions: [
+                              FlatButton(
+                                  onPressed: (){
+                                    print("hello");
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text("OK")
+                              ),
+                            ],
+                          )
+                      );
+                      return deleteResult?.data ?? false;
+                    }
                     return result;
                   },
                   background: Container(

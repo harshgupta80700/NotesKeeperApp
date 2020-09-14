@@ -90,5 +90,23 @@ class NotesServices{
 
   }
 
+  Future<APIResponse<bool>> deleteNote (String noteId){
+    return http.delete(url + '/notes/' + noteId,headers: headers).then((data){
+      print(data.statusCode);
+      if(data.statusCode == 204){
+        // final jsonData = json.decode(data.body);
+        // final note = Note.fromjson(jsonData);
+        return APIResponse<bool>(
+            data: true
+        );
+      }
+      throw Error();
+    }).catchError((_)=>APIResponse<bool>(
+        error: true,
+        errorMessage: "An error has occured"
+    ));
+
+  }
+
 
 }
